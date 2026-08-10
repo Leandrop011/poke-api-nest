@@ -1,0 +1,16 @@
+
+# ? version que usaremos
+version: '3'
+
+# ? servicios que correran(es como una mauina virtual, pero lo mas minimo de ella)
+services:
+  db: 
+    image: mongo:5 # * imagen 
+    restart: always 
+    ports: # * usara el puerto fisico de mi maquina para conectar y el puerto de mongo 
+      - 27017:27017
+    environment:
+      MONGODB_DATABASE: nest-pokemon
+    volumes: # * volumenes es para hacer persistente la data y por si se llega a borrar, reestablecerla
+      - ./mongo:/data/db # * se creara en el directorio raiz de mi proyecto, y se conectara con la carpeta data del contenedor
+
