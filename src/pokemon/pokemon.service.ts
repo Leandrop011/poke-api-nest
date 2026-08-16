@@ -4,11 +4,13 @@ import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { isValidObjectId, Model } from 'mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Injectable()
 export class PokemonService {
 
   constructor(
+    // ! el model nos permite hacer operaciones en la BD
     // * transformar el model a un provider o service, referencial el nombre del model
     // * nos sirve para crear registros de la bd
     // ? la entidad de pokemon nos sirve para poder usarla de modelo
@@ -19,9 +21,15 @@ export class PokemonService {
 
   ){}
   
-  // ! METODO QUE OBTENDRA TODOS LOS REGISTROS DE L bd
-  async findAll() {
-    return await this.pokemonModel.find().exec();
+  // ! METODO QUE OBTENDRA REGISTROS DE LA BD(PAGINADOS)  
+  async findAll( paginationDto: PaginationDto ) {
+    return await this.pokemonModel.find().
+        limit( paginationDto.limit ?? 10 ). // ? limit
+        skip( paginationDto.offset ?? 0 ). // ? offset optional properties que manda el user
+        sort({ // ? ordenar ascendentemente la column numPokemons
+          numPokemon: 1,
+        }).
+        select('-__v') // ? no mostrar la column -__v en la response
   }
   
   // ! METODO QUE ENCONTRARA UN POKEMON, SEGUN EL TERM(ID, NUMPOKEMON O NAMEPOKEMON)

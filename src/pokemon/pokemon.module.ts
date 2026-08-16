@@ -20,6 +20,6 @@ import { Pokemon, PokemonSchema } from './entities/pokemon.entity';
 
     ])
   ],
-  exports: [ PokemonService ], // ? solo exponemos el servicio para la seed
+  exports: [ MongooseModule ], // ? solo exponemos el modelmongoose para la seed
 })
 export class PokemonModule {}

@@ -7,8 +7,17 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
+      // * Para que los dtos decorados decoradores del classvalidator
+      // ? whitelist quite todo lo que manda el user y no este especificado en el dto 
       whitelist: true,
+      // ? forbid para que mande error si no hay las properties esperadas
       forbidNonWhitelisted: true,
+      // * Para que realice la transformacion de la data que se recive(queryparams, body)
+      // * transformarla hacia lo que requiere el dto que se requiere llenar
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      }
     })
   )
 
