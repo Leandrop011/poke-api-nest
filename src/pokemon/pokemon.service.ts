@@ -11,6 +11,9 @@ export class PokemonService {
   constructor(
     // * transformar el model a un provider o service, referencial el nombre del model
     // * nos sirve para crear registros de la bd
+    // ? la entidad de pokemon nos sirve para poder usarla de modelo
+    // ? y usar los metodos de mongoose y ejecutar metodos para inserciones, etc.
+    // ? de esa forma cada registro de pokemon en la bd tendra los parametros de nuestra entidad.
     @InjectModel( Pokemon.name )
     private readonly pokemonModel: Model<Pokemon>,
 

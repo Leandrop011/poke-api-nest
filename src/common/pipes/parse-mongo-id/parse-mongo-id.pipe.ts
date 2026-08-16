@@ -5,10 +5,9 @@ import { isValidObjectId } from 'mongoose';
 export class ParseMongoIdPipe implements PipeTransform {
 
   transform(value: string, metadata: ArgumentMetadata) {
-    
     // ? usamos el metodo de mongoose para saber si no es un mongoid
     if( !isValidObjectId(value) )
-      throw new BadRequestException(`${ value } is not a valid MongoID`)
+      throw new BadRequestException(`${ value } is not a valid MongoID.`)
     
     return value;
   }

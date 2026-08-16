@@ -19,6 +19,6 @@ export class Pokemon extends Document{
     public numPokemon!: number;
 }
 
-// ? debemos crear un schema por cada instancia(registro en la bd)
+// ? creamos la coleccion en la BD ( crear, aun no conectarla eso es en el module )
 export const PokemonSchema = SchemaFactory.createForClass( Pokemon );
 

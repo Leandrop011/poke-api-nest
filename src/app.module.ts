@@ -8,7 +8,6 @@ import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
-    
     ServeStaticModule.forRoot({ // ? servir contenido estatico(pagina web)
       rootPath: join(__dirname, '..', 'public'),
     }),
@@ -21,7 +20,6 @@ import { SeedModule } from './seed/seed.module';
     CommonModule,
 
     SeedModule,
-  
   ],
 })
 export class AppModule {}

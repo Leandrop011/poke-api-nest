@@ -34,6 +34,7 @@ export class PokemonController {
   }
 
   // ? utilizamos un pipe personalizado para verificar que siempre sea un mongoid el que se recibe
+  // ? lo valida y lo devuelve para el uso en el servicio
   @Delete(':id')
   remove(@Param('id', ParseMongoIdPipe) id: string) {
     return this.pokemonService.remove(id);

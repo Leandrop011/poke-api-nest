@@ -12,7 +12,7 @@ import { Pokemon, PokemonSchema } from './entities/pokemon.entity';
     // * (agregar una nueva entidad en la base de datos)
     MongooseModule.forFeature([ 
       
-      // * ENTIDAD POKEMON(AQUI SE CREA LA 'TABLA'(NO REGISTRO, ESO ES EN EL SERVICE))
+      // * ENTIDAD POKEMON(AQUI SE CREA LA 'TABLA'/'SHCEMA'(NO REGISTRO, ESO ES EN EL SERVICE))
       {
         name: Pokemon.name, // ! no es la property name, es el name de la function
         schema: PokemonSchema, // ? schema pokemon
