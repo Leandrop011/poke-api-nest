@@ -8,18 +8,21 @@ import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({ // ? servir contenido estatico(pagina web)
+
+    // ? servir contenido estatico(pagina web)
+    ServeStaticModule.forRoot({ 
       rootPath: join(__dirname, '..', 'public'),
     }),
-
+    
     // ? conexion a la base de datos de mongo
-    MongooseModule.forRoot('mongodb://localhost:27017/nest-pokemon'),
+    MongooseModule.forRoot(`${process.env.MONGODBCONNECTION}`),
 
     PokemonModule,
 
     CommonModule,
 
     SeedModule,
+
   ],
 })
 export class AppModule {}

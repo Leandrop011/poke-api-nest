@@ -25,16 +25,15 @@ npm i -g @nest/cli
 docker compose up -d
 ```
 
-5. Paquete necesario para la conexion de base de datos
+5. Levantar el proyecto
 ```
-npm i @nestjs/mongoose mongoose
+yarn start:dev
 ```
 
 6. Cargar de data a la BD
 ```
-localhost:3000/api/v1/seed/
+http://localhost:3000/api/v1/seed/
 ```
-
 
 ## Stack usado
 * MongoDB
