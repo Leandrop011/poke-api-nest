@@ -1,13 +1,375 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <link rel="stylesheet" href="css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Poke API — API REST de pokémon construida con NestJS, Mongoose y MongoDB.">
+    <meta name="color-scheme" content="dark">
+    <title>Poke API — REST API de pokémon (NestJS + MongoDB)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%230b0f14' stroke='%2322d3ee' stroke-width='8'/><path d='M6 50h88' stroke='%2322d3ee' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%230b0f14' stroke='%2322d3ee' stroke-width='8'/></svg>">
 </head>
 <body>
-    <h1>Este es mi sitio web</h1>
+
+<a class="skip-link" href="#endpoints">Ir a los endpoints</a>
+
+<header class="hero">
+    <div class="wrap">
+
+        <h1 class="hero__title">Poke<span class="accent">&nbsp;API</span></h1>
+
+        <p class="hero__sub">
+            API REST de pokémon construida con <strong>NestJS</strong>, <strong>Mongoose</strong> y
+            <strong>MongoDB</strong>. Esto es un servicio HTTP: no hay interfaz de usuario, se consume
+            desde tu cliente, tu terminal o tu aplicación.
+        </p>
+
+        <div class="baseurl">
+            <span class="baseurl__label">Base URL</span>
+            <code class="baseurl__value" id="base-url">https://poke-api-softdo.up.railway.app/api/v1</code>
+            <button class="copy copy--inline" type="button" data-copy-target="base-url">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                <span class="copy__label">Copiar</span>
+            </button>
+        </div>
+
+        <p class="hero__note">
+            Todas las rutas están prefijadas con <code>/api/v1</code>. Las respuestas son JSON.
+        </p>
+    </div>
+</header>
+
+<main class="wrap">
+
+    <!-- ============ STACK ============ -->
+    <section class="section" aria-labelledby="stack-title">
+        <h2 class="section__title" id="stack-title"><span class="hash">#</span> Stack</h2>
+        <ul class="tags">
+            <li class="tag">NestJS</li>
+            <li class="tag">TypeScript</li>
+            <li class="tag">MongoDB</li>
+            <li class="tag">Mongoose</li>
+            <li class="tag">Railway</li>
+        </ul>
+    </section>
+
+    <!-- ============ ENDPOINTS ============ -->
+    <section class="section" id="endpoints" aria-labelledby="endpoints-title">
+        <h2 class="section__title" id="endpoints-title"><span class="hash">#</span> Endpoints</h2>
+        <p class="section__lead">Seis endpoints. Todos cuelgan de la base URL de arriba.</p>
+
+        <ul class="ep-list">
+
+            <!-- 1 -->
+            <li class="ep" id="ep-list-all">
+                <div class="ep__head">
+                    <span class="method method--get">GET</span>
+                    <code class="ep__path">/api/v1/pokemon</code>
+                </div>
+                <p class="ep__desc">Lista los pokémon almacenados, ordenados de forma ascendente por número de pokédex.</p>
+
+                <table class="params">
+                    <caption class="params__caption">Query params (opcionales)</caption>
+                    <thead>
+                        <tr><th scope="col">Param</th><th scope="col">Tipo</th><th scope="col">Default</th><th scope="col">Descripción</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Param"><code>limit</code></td>
+                            <td data-label="Tipo">number &gt; 0</td>
+                            <td data-label="Default"><code>5</code></td>
+                            <td data-label="Descripción">Cantidad de registros a devolver.</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Param"><code>offset</code></td>
+                            <td data-label="Tipo">number &gt; 0</td>
+                            <td data-label="Default"><code>0</code></td>
+                            <td data-label="Descripción">Registros a saltar (paginación).</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-1">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-1"><code><span class="c"># todos los pokémon con los valores por defecto</span>
+curl https://poke-api-softdo.up.railway.app/api/v1/pokemon
+
+<span class="c"># página de 20 registros, saltando los 40 primeros</span>
+curl <span class="s">"https://poke-api-softdo.up.railway.app/api/v1/pokemon?limit=20&amp;offset=40"</span></code></pre>
+                </div>
+
+                <div class="code code--muted">
+                    <div class="code__bar">
+                        <span class="code__lang">200 OK</span>
+                        <button class="copy" type="button" data-copy-target="code-1r">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-1r"><code>[
+  { <span class="k">"_id"</span>: <span class="s">"6a8d1725c3e411bb29f3180c"</span>, <span class="k">"name"</span>: <span class="s">"bulbasaur"</span>, <span class="k">"numPokemon"</span>: <span class="n">1</span> },
+  { <span class="k">"_id"</span>: <span class="s">"6a8d1725c3e411bb29f3180d"</span>, <span class="k">"name"</span>: <span class="s">"ivysaur"</span>,   <span class="k">"numPokemon"</span>: <span class="n">2</span> }
+]</code></pre>
+                </div>
+            </li>
+
+            <!-- 2 -->
+            <li class="ep" id="ep-find-one">
+                <div class="ep__head">
+                    <span class="method method--get">GET</span>
+                    <code class="ep__path">/api/v1/pokemon/<span class="param">:term</span></code>
+                </div>
+                <p class="ep__desc">
+                    Busca un pokémon por <strong>id de Mongo</strong>, por <strong>número de pokédex</strong>
+                    (<code>numPokemon</code>) o por <strong>nombre</strong>. El nombre no distingue mayúsculas.
+                    Devuelve <code>404</code> si no existe.
+                </p>
+
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-2">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-2"><code><span class="c"># por número de pokédex</span>
+curl https://poke-api-softdo.up.railway.app/api/v1/pokemon/4
+
+<span class="c"># por nombre</span>
+curl https://poke-api-softdo.up.railway.app/api/v1/pokemon/charmander
+
+<span class="c"># por id de Mongo</span>
+curl https://poke-api-softdo.up.railway.app/api/v1/pokemon/6a8d1725c3e411bb29f3180f</code></pre>
+                </div>
+
+                <div class="code code--muted">
+                    <div class="code__bar">
+                        <span class="code__lang">200 OK</span>
+                        <button class="copy" type="button" data-copy-target="code-2r">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-2r"><code>{
+  <span class="k">"_id"</span>: <span class="s">"6a8d1725c3e411bb29f3180f"</span>,
+  <span class="k">"name"</span>: <span class="s">"charmander"</span>,
+  <span class="k">"numPokemon"</span>: <span class="n">4</span>
+}</code></pre>
+                </div>
+            </li>
+
+            <!-- 3 -->
+            <li class="ep" id="ep-create">
+                <div class="ep__head">
+                    <span class="method method--post">POST</span>
+                    <code class="ep__path">/api/v1/pokemon</code>
+                </div>
+                <p class="ep__desc">
+                    Crea un pokémon. <code>name</code> y <code>numPokemon</code> son obligatorios y únicos;
+                    el nombre se guarda en minúsculas. Cualquier propiedad extra en el body es rechazada.
+                </p>
+
+                <table class="params">
+                    <caption class="params__caption">Body — <code>application/json</code></caption>
+                    <thead>
+                        <tr><th scope="col">Campo</th><th scope="col">Tipo</th><th scope="col">Requerido</th><th scope="col">Reglas</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Campo"><code>name</code></td>
+                            <td data-label="Tipo">string</td>
+                            <td data-label="Requerido">Sí</td>
+                            <td data-label="Reglas">Mínimo 1 carácter. Único.</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Campo"><code>numPokemon</code></td>
+                            <td data-label="Tipo">number</td>
+                            <td data-label="Requerido">Sí</td>
+                            <td data-label="Reglas">Entero positivo, mínimo 1. Único.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-3">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-3"><code>curl -X POST https://poke-api-softdo.up.railway.app/api/v1/pokemon \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{ "name": "mewtwo", "numPokemon": 150 }'</span></code></pre>
+                </div>
+            </li>
+
+            <!-- 4 -->
+            <li class="ep" id="ep-update">
+                <div class="ep__head">
+                    <span class="method method--patch">PATCH</span>
+                    <code class="ep__path">/api/v1/pokemon/<span class="param">:term</span></code>
+                </div>
+                <p class="ep__desc">
+                    Actualiza un pokémon existente. El <code>:term</code> admite lo mismo que la búsqueda:
+                    id de Mongo, número de pokédex o nombre. El body es parcial: envía solo los campos
+                    que quieras cambiar.
+                </p>
+
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-4">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-4"><code>curl -X PATCH https://poke-api-softdo.up.railway.app/api/v1/pokemon/charmander \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{ "name": "charmander-shiny" }'</span></code></pre>
+                </div>
+            </li>
+
+            <!-- 5 -->
+            <li class="ep" id="ep-delete">
+                <div class="ep__head">
+                    <span class="method method--delete">DELETE</span>
+                    <code class="ep__path">/api/v1/pokemon/<span class="param">:id</span></code>
+                </div>
+                <p class="ep__desc">
+                    Elimina un pokémon. A diferencia de <code>GET</code> y <code>PATCH</code>, aquí
+                    <strong>solo se acepta el id de Mongo</strong>: cualquier otro valor devuelve
+                    <code>400 Bad Request</code>. Responde <code>{ "status": "OK" }</code>.
+                </p>
+
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-5">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-5"><code>curl -X DELETE https://poke-api-softdo.up.railway.app/api/v1/pokemon/6a8d1725c3e411bb29f3180f</code></pre>
+                </div>
+            </li>
+
+            <!-- 6 -->
+            <li class="ep" id="ep-seed">
+                <div class="ep__head">
+                    <span class="method method--get">GET</span>
+                    <code class="ep__path">/api/v1/seed</code>
+                </div>
+                <p class="ep__desc">
+                    Puebla la base de datos con los primeros 100 pokémon consumidos desde la
+                    <a href="https://pokeapi.co" rel="noopener noreferrer" target="_blank">PokeAPI</a> pública.
+                    Responde con el texto <code>SEED EXECUTED</code>.
+                </p>
+
+                <p class="warn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><path d="M12 9v5"/><path d="M12 17.5v.01"/><path d="M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20.4h15.6a2 2 0 0 0 1.7-3l-7.8-13.5a2 2 0 0 0-3.4 0Z"/></svg>
+                    <span>Operación destructiva: borra <strong>todos</strong> los registros existentes antes de insertar los nuevos.</span>
+                </p>
+
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-6">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-6"><code>curl https://poke-api-softdo.up.railway.app/api/v1/seed</code></pre>
+                </div>
+            </li>
+
+        </ul>
+    </section>
+
+    <!-- ============ CÓMO EMPEZAR ============ -->
+    <section class="section" aria-labelledby="start-title">
+        <h2 class="section__title" id="start-title"><span class="hash">#</span> Cómo empezar</h2>
+
+        <ol class="steps">
+            <li class="step">
+                <h3 class="step__title">Puebla la base de datos</h3>
+                <p class="step__text">
+                    Si la base está vacía, llama una vez al seed para cargar los primeros 100 pokémon.
+                </p>
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-s1">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-s1"><code>curl https://poke-api-softdo.up.railway.app/api/v1/seed</code></pre>
+                </div>
+            </li>
+
+            <li class="step">
+                <h3 class="step__title">Consulta el listado</h3>
+                <p class="step__text">
+                    Pide los pokémon paginados con <code>limit</code> y <code>offset</code>.
+                </p>
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-s2">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-s2"><code>curl <span class="s">"https://poke-api-softdo.up.railway.app/api/v1/pokemon?limit=10"</span></code></pre>
+                </div>
+            </li>
+
+            <li class="step">
+                <h3 class="step__title">Trabaja con un pokémon</h3>
+                <p class="step__text">
+                    Búscalo por id, número o nombre y, desde ahí, créalo, actualízalo o elimínalo.
+                </p>
+                <div class="code">
+                    <div class="code__bar">
+                        <span class="code__lang">curl</span>
+                        <button class="copy" type="button" data-copy-target="code-s3">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+                            <span class="copy__label">Copiar</span>
+                        </button>
+                    </div>
+<pre class="code__body" id="code-s3"><code>curl https://poke-api-softdo.up.railway.app/api/v1/pokemon/pikachu</code></pre>
+                </div>
+            </li>
+        </ol>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <div class="wrap footer__inner">
+        <p class="footer__brand">
+            <strong>Poke API</strong> — API REST de pokémon · NestJS + MongoDB
+        </p>
+        <p class="footer__meta">
+            <!-- TODO: reemplazar por la URL real del repositorio -->
+            <a href="#" class="footer__link">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19.9 5a4.9 4.9 0 0 0-.1-3.6s-1.1-.3-3.7 1.4a12.7 12.7 0 0 0-6.6 0C6.9 1.1 5.8 1.4 5.8 1.4A4.9 4.9 0 0 0 5.7 5a5.2 5.2 0 0 0-1.4 3.6c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.6V22"/></svg>
+                Repositorio <span class="footer__placeholder">https://github.com/Leandrop011/poke-api-nest</span>
+            </a>
+            <span class="footer__sep" aria-hidden="true">·</span>
+            <span id="year">2026</span>
+        </p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
