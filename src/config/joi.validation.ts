@@ -6,7 +6,7 @@ import * as Joi from "joi";
 // ? OBLIGAR AL USER QUE LAS INICIALICE
 export const JoiValidationSchema = Joi.object({
     MONGODBCONNECTION: Joi.required(),
-    PORT: Joi.number().default(3005),
+    PORT: Joi.number().default(3000),
     // * si no esta inicializado el env, le colocara el value de 5, en el env
     // * asi que cuando llegue al appconfig, ya tendra un value ese env
     // * pero es importante decir que el valor que coloca a la env va a ser un string(como todas las envs)
