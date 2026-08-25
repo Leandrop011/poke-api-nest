@@ -5,6 +5,11 @@
 ## POKE-API-NEST
 PokeApiNest es una API REST de Pokémon simple, construida con NestJS, Mongoose y MongoDB dockerizado. Ofrece un CRUD completo de pokemons con búsqueda flexible por número, nombre o mongoid, validación de datos mediante DTOs y un seed para test.
 
+## ENLACE PUBLICO
+```
+https://poke-api-softdo.up.railway.app/
+```
+
 # Ejecutar en desarrollo
 
 1. Clonar el repositorio
