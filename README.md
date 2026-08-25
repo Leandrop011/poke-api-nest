@@ -25,12 +25,16 @@ npm i -g @nest/cli
 docker compose up -d
 ```
 
-5. Levantar el proyecto
+5. Clonar el archivo __.env.example__ y renombrarlo a __.env__
+
+6. Llenar las variables de entorno definidas en el __.env__, acorde a su caso
+
+7. Levantar el proyecto en modo ```dev```
 ```
 yarn start:dev
 ```
 
-6. Cargar de data a la BD
+8. Reconstruir la BD con la semilla: 
 ```
 http://localhost:3000/api/v1/seed/
 ```

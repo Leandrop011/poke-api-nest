@@ -5,10 +5,13 @@ import { isValidObjectId, Model } from 'mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginationDto } from '../common/dto/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PokemonService {
 
+  private defaultLimit: number = 0;
+  
   constructor(
     // ! el model nos permite hacer operaciones en la BD
     // * transformar el model a un provider o service, referencial el nombre del model
@@ -18,13 +21,23 @@ export class PokemonService {
     // ? de esa forma cada registro de pokemon en la bd tendra los parametros de nuestra entidad.
     @InjectModel( Pokemon.name )
     private readonly pokemonModel: Model<Pokemon>,
+    
+    // ! INJECCION DEL CONFIGSERVICE (ENVS)
+    private readonly configService: ConfigService
+  ){
 
-  ){}
+    // ? uso del configService para obtener el limit value en las envs
+    this.defaultLimit = this.configService.getOrThrow<number>('default_limit');
+
+  }
+
   
   // ! METODO QUE OBTENDRA REGISTROS DE LA BD(PAGINADOS)  
   async findAll( paginationDto: PaginationDto ) {
     return await this.pokemonModel.find().
-        limit( paginationDto.limit ?? 10 ). // ? limit
+        // * usamos las envs se configservice (del configmodule) y usar el get es obtener parametros 
+        // * de la function que se definio 
+        limit( paginationDto.limit ?? 5 ). // ? limit
         skip( paginationDto.offset ?? 0 ). // ? offset optional properties que manda el user
         sort({ // ? ordenar ascendentemente la column numPokemons
           numPokemon: 1,
