@@ -12,7 +12,7 @@ export class SeedService {
 
   // ? INJECCION DEL MODEL DE POKEMON EN LA SEED
   constructor(
-    // * model 
+    // * model  ( el name es necesario para saber el model )
     @InjectModel( Pokemon.name )
     private readonly pokemonModel: Model<Pokemon>,
     // * adaptador de paquete de peticiones http
@@ -26,7 +26,8 @@ export class SeedService {
     await this.pokemonModel.deleteMany({}) // ! ===> Delete * from Pokemons 
 
     // ? REALIZAMOS UNA PETICION HTTP A POKEAPI Y QUE NOS DEVUELVA 100 REGISTROS(SOLO DESEAMOS LA DATA)
-    // ? PARA TIPEAR LA DATA USAMOS UNA INTERFAZ O NUESTRA ENTIDAD PARA ACOPLARNOS A NUESTRAS REGLAS DE NEGOCIO. 
+    // ? PARA TIPEAR LA DATA USAMOS UNA INTERFAZ O NUESTRA ENTIDAD PARA ACOPLARNOS A NUESTRAS REGLAS DE NEGOCIO.
+    // ? OJO ESTO NO TRANSFORMA LA DATA, SOLO LE AGREGA TIPADO 
     const respToRequest = await this.http.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon?limit=100');
 
     // * se creo un array de objetos que lucen como un registro de Pokemon
@@ -45,7 +46,7 @@ export class SeedService {
       // * llenamos el array de todos los pokemons
       pokemonToInsert.push({name, numPokemon});
 
-    })
+    });
 
     // ! INSERTAMOS LOS REGISTROS EN UNA SOLA QUERY A LA BD
     // * y cuando ya termino el metodo y de iterar ejecutamos un await para una 

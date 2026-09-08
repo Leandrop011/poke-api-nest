@@ -92,7 +92,7 @@ export class PokemonService {
 
     // * si todo sale bien
     try {
-      // ? crear o insertar en la bd
+      // ? crear o insertar en la bd ( tiene los suficientes parametros para crear uno  )
       const pokemon = await this.pokemonModel.create(createPokemonDto);
   
       return pokemon;

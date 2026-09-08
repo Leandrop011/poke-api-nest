@@ -1,4 +1,4 @@
-
+# ! ESTE ARCHIVO DOCKER LEVANTA UNA BASE DE DATOS DE MONGO LOCALMENTE
 # ? version que usaremos
 version: '3'
 

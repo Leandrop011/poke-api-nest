@@ -27,9 +27,10 @@ import { JoiValidationSchema } from './config/joi.validation';
     }),
 
     // ? conexion a la base de datos de mongo usando la funcion que maneja las envs 
-    MongooseModule.forRoot(process.env.MONGODBCONNECTION!, {
-      dbName: 'pokeBdOn' // ? nombre de la bd
-    }),
+    MongooseModule.forRoot(
+      process.env.MONGODBCONNECTION!, 
+      { dbName: 'pokeBdOn' } // ? nombre de la bd
+    ),
 
     PokemonModule,
 
