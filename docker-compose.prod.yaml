@@ -1,0 +1,37 @@
+# ! DOCKER YAML QUE SE ENCARGARA DE LEVANTAR 2 SERVICIOS
+# ! NUESTRA APP Y LA BASE DE DATOS DE MONGO A TRAVES DE EL DOCKERFILE
+
+version: '3'
+
+services:
+  pokedexapp:
+    # ? DEPENDENCIA DE PRIMERO LEVANTAR LA BASE DE DATOS
+    depends_on:
+      - db
+    # ? CONSTRUCCION EN BASE AL CONTEXT DEL PROYECTO Y DEL DOCKERFILE
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: pokedex-docker
+    container_name: pokedexapp
+    restart: always # reiniciar el contenedor si se detiene
+    ports:
+      - "${PORT}:${PORT}"
+    # working_dir: /var/www/pokedex
+    environment:
+      MONGODBCONNECTION: ${MONGODBCONNECTION}
+      PORT: ${PORT}
+      DEFAULT_LIMIT: ${DEFAULT_LIMIT}
+    # volumes:
+    #   - ./:/var/www/pokedex
+
+  db:
+    image: mongo:5
+    container_name: mongo-poke
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_DATABASE: nest-pokemon
+    volumes:
+      - ./mongo:/data/db # ? crear un volumen para la persistencia de la data

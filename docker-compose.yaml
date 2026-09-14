@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # ! ESTE ARCHIVO DOCKER LEVANTA UNA BASE DE DATOS DE MONGO LOCALMENTE
+=======
+# ! IMAGEN DE DOCKER QUE SE LEVANTARA LOCALMENTE
+>>>>>>> section-env-docker-deployment
 # ? version que usaremos
 version: '3'
 
