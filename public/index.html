@@ -1,13 +1,302 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="description" content="Documentación interactiva de Poke API — REST API de pokémon construida con NestJS, Mongoose y MongoDB.">
+    <title>Poke API · Documentación</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Este es mi sitio web</h1>
+
+    <!-- Blobs de color difuminados y animados que dan el fondo al glassmorphism -->
+    <div class="backdrop" aria-hidden="true">
+        <span class="blob blob--red"></span>
+        <span class="blob blob--yellow"></span>
+        <span class="blob blob--blue"></span>
+        <span class="blob blob--violet"></span>
+        <span class="grid-overlay"></span>
+    </div>
+
+    <!-- Botón de navegación para móvil -->
+    <button class="nav-toggle glass" id="navToggle" aria-label="Abrir navegación" aria-expanded="false" aria-controls="sidebar">
+        <span class="nav-toggle__bars"></span>
+    </button>
+    <div class="nav-scrim" id="navScrim" hidden></div>
+
+    <div class="layout">
+
+        <!-- ══ NAVEGACIÓN LATERAL ══ -->
+        <aside class="sidebar glass" id="sidebar">
+            <a class="brand" href="#top">
+                <span class="brand__mark" aria-hidden="true"></span>
+                <span class="brand__text">
+                    <strong>Poke API</strong>
+                    <small>v1 · REST</small>
+                </span>
+            </a>
+
+            <nav class="nav" id="nav" aria-label="Secciones de la documentación">
+                <p class="nav__label">Introducción</p>
+                <ul class="nav__list">
+                    <li><a class="nav__link" href="#overview">Visión general</a></li>
+                    <li><a class="nav__link" href="#base-url">Base URL</a></li>
+                    <li><a class="nav__link" href="#model">Modelo Pokemon</a></li>
+                    <li><a class="nav__link" href="#validation">Validación global</a></li>
+                </ul>
+
+                <p class="nav__label">Endpoints · Pokemon</p>
+                <ul class="nav__list" id="navPokemon"></ul>
+
+                <p class="nav__label">Endpoints · Seed</p>
+                <ul class="nav__list" id="navSeed"></ul>
+
+                <p class="nav__label">Referencia</p>
+                <ul class="nav__list">
+                    <li><a class="nav__link" href="#errors">Códigos de error</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar__foot">
+                <span class="dot" id="healthDot" aria-hidden="true"></span>
+                <span id="healthText">Comprobando API…</span>
+            </div>
+        </aside>
+
+        <!-- ══ CONTENIDO ══ -->
+        <main class="content" id="top">
+
+            <!-- HERO -->
+            <header class="hero">
+                <h1 class="hero__title">
+                    Poke<span class="grad">API</span>
+                </h1>
+                <p class="hero__sub">
+                    API REST para gestionar un pokédex: crear, consultar, actualizar y eliminar pokémon,
+                    con paginación y un endpoint de <em>seed</em> que puebla la base de datos desde PokeAPI.
+                    Toda la documentación de esta página está extraída directamente del código fuente,
+                    y cada endpoint puede probarse aquí mismo.
+                </p>
+
+                <div class="hero__stats">
+                    <div class="stat glass">
+                        <strong>6</strong>
+                        <span>Endpoints</span>
+                    </div>
+                    <div class="stat glass">
+                        <strong>/api/v1</strong>
+                        <span>Prefijo global</span>
+                    </div>
+                    <div class="stat glass">
+                        <strong>JSON</strong>
+                        <span>Request / Response</span>
+                    </div>
+                    <div class="stat glass">
+                        <strong>Pública</strong>
+                        <span>Sin autenticación</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- VISIÓN GENERAL -->
+            <section class="section" id="overview">
+                <h2 class="section__title">Visión general</h2>
+                <div class="card glass">
+                    <p class="prose">
+                        La API expone un único recurso, <code>pokemon</code>, y un endpoint auxiliar de
+                        <code>seed</code> pensado para desarrollo. No requiere cabeceras de autenticación:
+                        todos los endpoints son públicos.
+                    </p>
+                    <p class="prose">
+                        Las peticiones con cuerpo deben enviar <code>Content-Type: application/json</code>.
+                        Las respuestas son JSON, con la única excepción de
+                        <code>GET /api/v1/seed</code>, que devuelve texto plano.
+                    </p>
+                    <div class="callout callout--info">
+                        <strong>Sin autenticación.</strong>
+                        No hay guards, API keys ni cabeceras de sesión en el proyecto. Cualquier cliente
+                        puede llamar a cualquier endpoint, incluido el de <em>seed</em>.
+                    </div>
+                </div>
+            </section>
+
+            <!-- BASE URL -->
+            <section class="section" id="base-url">
+                <h2 class="section__title">Base URL</h2>
+                <div class="card glass">
+                    <p class="prose">
+                        Todas las rutas cuelgan del prefijo global <code>api/v1</code>, configurado con
+                        <code>app.setGlobalPrefix('api/v1')</code>.
+                    </p>
+
+                    <div class="url-row">
+                        <span class="url-row__tag url-row__tag--live">Producción</span>
+                        <code class="url-row__value" id="urlProd">https://poke-api-softdo.up.railway.app/api/v1</code>
+                        <button class="btn btn--ghost btn--sm" data-copy="#urlProd">Copiar</button>
+                    </div>
+
+                    <div class="url-row">
+                        <span class="url-row__tag">Local</span>
+                        <code class="url-row__value" id="urlLocal">http://localhost:3005/api/v1</code>
+                        <button class="btn btn--ghost btn--sm" data-copy="#urlLocal">Copiar</button>
+                    </div>
+
+                    <div class="url-row">
+                        <span class="url-row__tag url-row__tag--now">Esta página</span>
+                        <code class="url-row__value" id="urlCurrent">—</code>
+                        <button class="btn btn--ghost btn--sm" data-copy="#urlCurrent">Copiar</button>
+                    </div>
+
+                    <div class="callout callout--warn">
+                        <strong>Puerto en local.</strong>
+                        La app arranca con <code>process.env.PORT ?? 3000</code>, pero el esquema de validación
+                        de entorno (Joi) rellena <code>PORT</code> con <code>3005</code> cuando no está definida
+                        en el <code>.env</code>. Si no fijas <code>PORT</code>, la API escuchará en el
+                        <strong>3005</strong>.
+                    </div>
+                    <div class="callout callout--info">
+                        <strong>El playground usa rutas relativas.</strong>
+                        Las peticiones se lanzan contra <code>/api/v1/…</code> sobre el origen actual, así que
+                        funciona igual en local y en Railway sin depender de CORS (la web se sirve desde la
+                        propia API mediante <code>ServeStaticModule</code>).
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODELO -->
+            <section class="section" id="model">
+                <h2 class="section__title">Modelo <span class="mono">Pokemon</span></h2>
+                <div class="card glass">
+                    <p class="prose">
+                        Cada documento de la colección tiene dos campos propios más los que añade MongoDB.
+                        Ambos campos son <strong>únicos e indexados</strong>.
+                    </p>
+                    <div class="table-wrap">
+                        <table class="table">
+                            <thead>
+                                <tr><th>Campo</th><th>Tipo</th><th>Notas</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mono accent">_id</td>
+                                    <td class="mono">string</td>
+                                    <td>ObjectId generado por MongoDB.</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono accent">name</td>
+                                    <td class="mono">string</td>
+                                    <td><span class="tag">unique</span><span class="tag">index</span> Se normaliza a minúsculas al crear y al actualizar.</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono accent">numPokemon</td>
+                                    <td class="mono">number</td>
+                                    <td><span class="tag">unique</span><span class="tag">index</span> Número de la pokédex. Es el criterio de orden en el listado.</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono accent">__v</td>
+                                    <td class="mono">number</td>
+                                    <td>Versión interna de Mongoose. Se excluye únicamente en el listado paginado.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VALIDACIÓN -->
+            <section class="section" id="validation">
+                <h2 class="section__title">Validación global</h2>
+                <div class="card glass">
+                    <p class="prose">
+                        Un <code>ValidationPipe</code> global procesa todos los cuerpos y query params con esta
+                        configuración:
+                    </p>
+                    <ul class="bullets">
+                        <li><code>whitelist: true</code> — elimina las propiedades que no estén declaradas en el DTO.</li>
+                        <li><code>forbidNonWhitelisted: true</code> — y además <strong>responde 400</strong> si llegan propiedades desconocidas, tanto en el body como en la query string.</li>
+                        <li><code>transform: true</code> con <code>enableImplicitConversion: true</code> — convierte los tipos automáticamente, por eso <code>?limit=5</code> llega al DTO como número.</li>
+                    </ul>
+                    <div class="callout callout--warn">
+                        <strong>Cuidado con los campos extra.</strong>
+                        Enviar <code>{ "name": "pikachu", "tipo": "eléctrico" }</code> devuelve
+                        <code>400</code> con <code>property tipo should not exist</code>. Lo mismo con un
+                        query param no declarado, p. ej. <code>?page=2</code>.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ENDPOINTS: POKEMON -->
+            <section class="section" id="endpoints-pokemon">
+                <h2 class="section__title">Endpoints · Pokemon</h2>
+                <p class="section__hint">Recurso principal. Cada tarjeta incluye un playground ejecutable.</p>
+                <div id="listPokemon" class="endpoints"></div>
+            </section>
+
+            <!-- ENDPOINTS: SEED -->
+            <section class="section" id="endpoints-seed">
+                <h2 class="section__title">Endpoints · Seed</h2>
+                <p class="section__hint">Utilidad de desarrollo para poblar la base de datos.</p>
+                <div id="listSeed" class="endpoints"></div>
+            </section>
+
+            <!-- ERRORES -->
+            <section class="section" id="errors">
+                <h2 class="section__title">Códigos de error</h2>
+                <div class="card glass">
+                    <div class="table-wrap">
+                        <table class="table">
+                            <thead>
+                                <tr><th>Código</th><th>Cuándo ocurre</th><th>Mensaje de ejemplo</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="status status--4xx">400</span></td>
+                                    <td>El body o la query no pasan la validación del DTO, o incluyen campos no declarados.</td>
+                                    <td class="mono small">numPokemon must be a positive number</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status status--4xx">400</span></td>
+                                    <td>Se intenta crear o actualizar un pokémon con un <code>name</code> o <code>numPokemon</code> que ya existe (índice único, error 11000 de Mongo).</td>
+                                    <td class="mono small">Pokemon exist in db {"name":"pikachu"}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status status--4xx">400</span></td>
+                                    <td>En <code>DELETE</code>, el <code>id</code> no es un MongoID válido (lo rechaza un pipe personalizado antes de tocar la base de datos).</td>
+                                    <td class="mono small">abc is not a valid MongoID.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status status--4xx">400</span></td>
+                                    <td>En <code>DELETE</code>, el MongoID es válido pero no existe ningún documento con ese <code>_id</code>.</td>
+                                    <td class="mono small">Pokemon with id: '...' not found.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status status--4xx">404</span></td>
+                                    <td>En <code>GET /:term</code> y <code>PATCH /:term</code>, no hay coincidencia por número, MongoID ni nombre.</td>
+                                    <td class="mono small">Pokemon with id, name or numPokemon "x",not found</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status status--5xx">500</span></td>
+                                    <td>Cualquier otro fallo al crear o actualizar.</td>
+                                    <td class="mono small">Cant operation pokemon - Check server logs.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="prose small">
+                        Todos los errores siguen el formato estándar de excepciones de NestJS:
+                        <code>{ "message": …, "error": …, "statusCode": … }</code>.
+                    </p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
 </body>
 </html>
